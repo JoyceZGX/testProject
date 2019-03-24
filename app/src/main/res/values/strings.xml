@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">testProject</string>
+
+    <string name="date_prompt">Choose a date</string>
+
+    <string-array name="date_arrays">
+        <item>Yesterday</item>
+        <item>Today</item>
+        <item>Tomorrow</item>
+
+    </string-array>
+</resources>
