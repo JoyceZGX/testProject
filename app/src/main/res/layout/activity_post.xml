@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".PostActivity">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/dish_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:text="DishName"
+            android:textSize="40sp" />
+
+        <TextView
+            android:id="@+id/post"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@android:color/holo_red_light"
+            android:text="Post"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_marginLeft="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:stepSize="0.5"
+        android:rating="5"/>
+
+
+    <EditText
+        android:id="@+id/add_comment"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_below="@id/ratingBar"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:autofillHints=""
+        android:background="@android:color/background_light"
+        android:gravity="top"
+        android:hint="Please comment here."
+        android:inputType="textMultiLine|textLongMessage"
+        android:singleLine="false" />
+
+
+    <ImageButton
+        android:id="@+id/addImage"
+        android:layout_width="match_parent"
+        android:layout_height="136dp"
+        android:background="?android:attr/colorButtonNormal"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_photo_camera_black_24dp"
+        android:contentDescription="TODO" />
+
+
+</LinearLayout>

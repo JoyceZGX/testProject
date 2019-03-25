@@ -58,11 +58,11 @@ public class AccountActivity extends AppCompatActivity {
                     case R.id.nav_account:
                         break;
                     case R.id.nav_menu:
-                        Intent intent0 = new Intent (AccountActivity.this, MenuActivity.class);
+                        Intent intent0 = new Intent (AccountActivity.this, DisplayActivity.class);
                         startActivity(intent0);
                         break;
                     case R.id.nav_report:
-                        Intent intent2 = new Intent (AccountActivity.this, MenuActivity.class);
+                        Intent intent2 = new Intent (AccountActivity.this, DisplayActivity.class);
                         startActivity(intent2);
                         break;
 

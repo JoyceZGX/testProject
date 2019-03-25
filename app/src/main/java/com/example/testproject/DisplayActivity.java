@@ -118,7 +118,7 @@ public class DisplayActivity extends Activity
                     case R.id.nav_menu:
                         break;
                     case R.id.nav_report:
-                        Intent intent2 = new Intent (DisplayActivity.this, MenuActivity.class);
+                        Intent intent2 = new Intent (DisplayActivity.this, DisplayActivity.class);
                         startActivity(intent2);
                         break;
 
@@ -380,8 +380,8 @@ public class DisplayActivity extends Activity
          * @throws IOException
          */
         private List<String> getDataFromApi() throws IOException {
-            String spreadsheetId = "1oOG0r32pIcwvjOdQR9lKQbFJieNwK-to12aIQ7u8IDs";
-            String range = "Class Data!A2:C";
+            String spreadsheetId = "1Zx3EUHonLy6P9xTD0sqzaPUtpCfr371kCaug-6tZxAM";
+            String range = "Class Data!A2:G";
             List<String> results = new ArrayList<String>();
             ValueRange response = this.mService.spreadsheets().values()
                     .get(spreadsheetId, range)
@@ -391,6 +391,7 @@ public class DisplayActivity extends Activity
 
                 for (List row : values) {
                     results.add(row.get(spinner.getSelectedItemPosition()) + "  " );
+                    //results.add(row.get(4)+"");
                 }
             }
             return results;

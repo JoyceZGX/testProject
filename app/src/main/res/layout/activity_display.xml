@@ -10,12 +10,12 @@
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:entries="@array/date_arrays"
+        android:gravity="center"
         android:prompt="@string/date_prompt"
         android:spinnerMode="dropdown"
         app:layout_constraintStart_toStartOf="parent"
-        android:gravity="center"
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.design.widget.BottomNavigationView
@@ -31,7 +31,7 @@
         android:id="@+id/testing"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
+        android:paddingTop="10dp"
         android:verticalScrollbarPosition="right"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,6 +41,7 @@
         android:id="@+id/menu_list"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/testing"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="72dp" />
 </android.support.constraint.ConstraintLayout>

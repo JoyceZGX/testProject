@@ -13,9 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DishActivity"></activity>
+        <activity android:name=".PostActivity"></activity>
+        <activity android:name=".DishActivity" />
         <activity android:name=".DisplayActivity" />
-        <activity android:name=".MenuActivity" />
         <activity android:name=".ReportActivity" />
         <activity android:name=".AccountActivity" />
         <activity android:name=".StartActivity" />

@@ -37,11 +37,11 @@ public class StartActivity extends AppCompatActivity {
                         startActivity(intent0);
                         break;
                     case R.id.nav_menu:
-                        Intent intent1 = new Intent (StartActivity.this, MenuActivity.class);
+                        Intent intent1 = new Intent (StartActivity.this, DisplayActivity.class);
                         startActivity(intent1);
                         break;
                     case R.id.nav_report:
-                        Intent intent2 = new Intent (StartActivity.this, MenuActivity.class);
+                        Intent intent2 = new Intent (StartActivity.this, DisplayActivity.class);
                         startActivity(intent2);
                         break;
                 }
