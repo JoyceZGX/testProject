@@ -1,18 +1,13 @@
 package com.example.testproject;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,7 +16,7 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.google.common.base.Strings;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,10 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class DishActivity extends AppCompatActivity {
 
@@ -40,10 +32,12 @@ public class DishActivity extends AppCompatActivity {
     Button posting;
     ListView mcommentView;
     RatingBar mRatingBar; //rating
+    ImageView favourite;
     ArrayList<String> list;
     DatabaseReference mdatabaseReferece;
     ArrayAdapter<String> adapter;
     LinearLayout gallery;
+    ArrayList<String> favouriteList;
     //ImageView dishImage;
     //int numStars ;
     int index = 0;
@@ -61,13 +55,25 @@ public class DishActivity extends AppCompatActivity {
         mRatingBar = findViewById(R.id.ratingBar);
         mcommentView = findViewById(R.id.commentList);
         gallery =findViewById(R.id.gallery);
-
-
+        favourite = findViewById(R.id.favouriteBtn);
+        favouriteList = new ArrayList<>();
 
         //get the dishName of the intent
         Intent n1 = getIntent();
         final String newDish = n1.getStringExtra("DishName");
         dishName.setText(newDish);
+
+        /*
+        Add dish to the favourite list
+         */
+        favourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = getIntent();
+                favouriteList.add(newDish);
+                intent.putExtra("favList", favouriteList);
+            }
+        });
 
         //connect to firebase
         mdatabaseReferece = FirebaseDatabase.getInstance().getReference("Post");
@@ -114,7 +120,9 @@ public class DishActivity extends AppCompatActivity {
             }
         });
 
-
+        /*
+        Go to the post page when post clicked
+         */
         posting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,7 +132,14 @@ public class DishActivity extends AppCompatActivity {
             }
         });
 
+        /*
+        Navigation Bar set up
+         */
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation_bar);
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser().getEmail().equals("report.tristy@gmail.com")){
+            bottomNavigationView.getMenu().findItem(R.id.nav_report).setVisible(true);
+        }
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -134,15 +149,15 @@ public class DishActivity extends AppCompatActivity {
                         startActivity(intent1);
                         break;
                     case R.id.nav_account:
-                        Intent intent0 = new Intent (DishActivity.this, DisplayActivity.class);
+                        Intent intent0 = new Intent (DishActivity.this, MenuActivity.class);
                         startActivity(intent0);
                         break;
                     case R.id.nav_menu:
-                        Intent intent3 = new Intent (DishActivity.this, DisplayActivity.class);
+                        Intent intent3 = new Intent (DishActivity.this, MenuActivity.class);
                         startActivity(intent3);
                         break;
                     case R.id.nav_report:
-                        Intent intent2 = new Intent (DishActivity.this, DisplayActivity.class);
+                        Intent intent2 = new Intent (DishActivity.this, MenuActivity.class);
                         startActivity(intent2);
                         break;
 

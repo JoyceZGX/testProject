@@ -41,7 +41,7 @@ public class StartActivity extends AppCompatActivity {
                         startActivity(intent0);
                         break;
                     case R.id.nav_menu:
-                        Intent intent1 = new Intent (StartActivity.this, DisplayActivity.class);
+                        Intent intent1 = new Intent (StartActivity.this, MenuActivity.class);
                         startActivity(intent1);
                         break;
                     case R.id.nav_report:
@@ -66,7 +66,7 @@ public class StartActivity extends AppCompatActivity {
     }
 
     public void openMatherMenu(){
-        Intent intent = new Intent(this, DisplayActivity.class);
+        Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
     }
 }

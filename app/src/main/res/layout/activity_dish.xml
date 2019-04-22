@@ -30,23 +30,41 @@
         android:text="Post your Comments"
         android:textSize="20sp" />
 
-    <RatingBar
-        android:id="@+id/ratingBar"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linear_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:layout_below="@id/sendFeedbackBtn"
-        android:isIndicator="true"
-        android:numStars="5"
-        android:paddingTop="8dp"
-        android:progressTint="@color/colorAccent"
-        android:rating="0"
-        android:stepSize="0.5" />
+        android:orientation="horizontal">
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="80dp"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:paddingTop="8dp"
+            android:progressTint="@color/colorAccent"
+            android:rating="0"
+            android:stepSize="0.5" />
+
+        <ImageButton
+            android:id="@+id/favouriteBtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/common_google_signin_btn_text_dark_default"
+            tools:srcCompat="@drawable/ic_favorite_pink_30dp" />
+    </LinearLayout>
 
     <ListView
         android:id="@+id/commentList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ratingBar"
+        android:layout_below="@id/linear_layout"
         android:background="#E5E5E5"
         android:dividerHeight="10dp"
         android:paddingTop="8dp" />
@@ -76,6 +94,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="4dp"
         app:itemBackground="@android:color/background_light"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

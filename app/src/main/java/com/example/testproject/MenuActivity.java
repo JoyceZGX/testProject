@@ -30,15 +30,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.text.TextUtils;
-import android.text.method.ScrollingMovementMethod;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -46,12 +42,13 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class DisplayActivity extends Activity
+public class MenuActivity extends Activity
         implements EasyPermissions.PermissionCallbacks, AdapterView.OnItemSelectedListener {
     GoogleAccountCredential mCredential;
     private TextView mOutputText;
@@ -89,15 +86,37 @@ public class DisplayActivity extends Activity
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
 
-
+        switch (day) {
+            case Calendar.SUNDAY:
+                spinner.setSelection(0);
+                break;
+            case Calendar.MONDAY:
+                spinner.setSelection(1);
+                break;
+            case Calendar.TUESDAY:
+                spinner.setSelection(2);
+                break;
+            case Calendar.WEDNESDAY:
+                spinner.setSelection(3);
+                break;
+            case Calendar.THURSDAY:
+                spinner.setSelection(4);
+                break;
+            case Calendar.FRIDAY:
+                spinner.setSelection(5);
+                break;
+            case Calendar.SATURDAY:
+                spinner.setSelection(6);
+                break;
+        }
 
         mOutputText = (TextView) findViewById(R.id.testing);
 
-
         mProgress = new ProgressDialog(this);
         mProgress.setMessage("Calling Google Sheets API ...");
-
 
         // Initialize credentials and service object.
         mCredential = GoogleAccountCredential.usingOAuth2(
@@ -114,21 +133,19 @@ public class DisplayActivity extends Activity
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()){
                     case R.id.nav_home:
-                        Intent intent1 = new Intent (DisplayActivity.this, StartActivity.class);
+                        Intent intent1 = new Intent (MenuActivity.this, StartActivity.class);
                         startActivity(intent1);
                         break;
                     case R.id.nav_account:
-                        Intent intent0 = new Intent (DisplayActivity.this, AccountActivity.class);
+                        Intent intent0 = new Intent (MenuActivity.this, AccountActivity.class);
                         startActivity(intent0);
                         break;
                     case R.id.nav_menu:
                         break;
                     case R.id.nav_report:
-                        Intent intent2 = new Intent (DisplayActivity.this, DisplayActivity.class);
+                        Intent intent2 = new Intent (MenuActivity.this, MenuActivity.class);
                         startActivity(intent2);
                         break;
-
-
                 }
                 return false;
             }
@@ -329,7 +346,7 @@ public class DisplayActivity extends Activity
             final int connectionStatusCode) {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
         Dialog dialog = apiAvailability.getErrorDialog(
-                DisplayActivity.this,
+                MenuActivity.this,
                 connectionStatusCode,
                 REQUEST_GOOGLE_PLAY_SERVICES);
         dialog.show();
@@ -418,12 +435,12 @@ public class DisplayActivity extends Activity
                 mOutputText.setText("No results returned.");
             } else {
                 //output.add(0, "Data retrieved using the Google Sheets API:");
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(DisplayActivity.this,android.R.layout.simple_list_item_1,output);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(MenuActivity.this,android.R.layout.simple_list_item_1,output);
                 menuView.setAdapter(adapter);
                 menuView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent in1 = new Intent(DisplayActivity.this, DishActivity.class);
+                        Intent in1 = new Intent(MenuActivity.this, DishActivity.class);
                         in1.putExtra("DishName",output.get(position));
                         startActivity(in1);
                     }
@@ -443,7 +460,7 @@ public class DisplayActivity extends Activity
                 } else if (mLastError instanceof UserRecoverableAuthIOException) {
                     startActivityForResult(
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
-                            DisplayActivity.REQUEST_AUTHORIZATION);
+                            MenuActivity.REQUEST_AUTHORIZATION);
                 } else {
                     mOutputText.setText("The following error occurred:\n"
                             + mLastError.getMessage());

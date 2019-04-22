@@ -10,16 +10,29 @@
         android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/logOutBtn"
-
+        android:layout_alignParentTop="true"
+        android:paddingLeft="8dp"
+        android:paddingTop="16dp"
+        android:text="text"
+        android:textColor="?attr/colorPrimary"
         android:textSize="36sp" />
 
     <Button
         android:id="@+id/logOutBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/bottom_navigation_bar"
+        android:layout_marginBottom="8dp"
+        android:paddingBottom="20dp"
         android:text="LogOut"
         android:textSize="24sp" />
+
+    <ListView
+        android:id="@+id/list_favourite"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/logOutBtn"
+        android:layout_below="@id/username" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation_bar"

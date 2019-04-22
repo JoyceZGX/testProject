@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
+
 public class AccountActivity extends AppCompatActivity {
 
     private Button mLogOut;
@@ -29,11 +31,15 @@ public class AccountActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null){
             if (user.getEmail()!= null) {
-                String name = user.getEmail();
+                String name = user.getDisplayName();
                 text.setText("Hello "+name);
             }
         }
 
+        /*
+        Display user's favourite dishes
+         */
+        ArrayList<String> favouriteList = (ArrayList<String>) getIntent().getSerializableExtra("favList");
 
 
 
@@ -43,6 +49,7 @@ public class AccountActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
+                startActivity(new Intent(AccountActivity.this, AuthActivity.class));
             }
         });
 
@@ -61,11 +68,11 @@ public class AccountActivity extends AppCompatActivity {
                     case R.id.nav_account:
                         break;
                     case R.id.nav_menu:
-                        Intent intent0 = new Intent (AccountActivity.this, DisplayActivity.class);
+                        Intent intent0 = new Intent (AccountActivity.this, MenuActivity.class);
                         startActivity(intent0);
                         break;
                     case R.id.nav_report:
-                        Intent intent2 = new Intent (AccountActivity.this, DisplayActivity.class);
+                        Intent intent2 = new Intent (AccountActivity.this, MenuActivity.class);
                         startActivity(intent2);
                         break;
 
