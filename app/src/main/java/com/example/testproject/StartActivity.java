@@ -26,6 +26,10 @@ public class StartActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation_bar);
+        if (mAuth.getCurrentUser().getEmail().equals("report.tristy@gmail.com")){
+            bottomNavigationView.getMenu().findItem(R.id.nav_report).setVisible(true);
+        }
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -41,7 +45,7 @@ public class StartActivity extends AppCompatActivity {
                         startActivity(intent1);
                         break;
                     case R.id.nav_report:
-                        Intent intent2 = new Intent (StartActivity.this, DisplayActivity.class);
+                        Intent intent2 = new Intent (StartActivity.this, ReportActivity.class);
                         startActivity(intent2);
                         break;
                 }

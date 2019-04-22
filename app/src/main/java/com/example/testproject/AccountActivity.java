@@ -47,6 +47,9 @@ public class AccountActivity extends AppCompatActivity {
         });
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation_bar);
+        if (mAuth.getCurrentUser().getEmail().equals("report.tristy@gmail.com")){
+            bottomNavigationView.getMenu().findItem(R.id.nav_report).setVisible(true);
+        }
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {

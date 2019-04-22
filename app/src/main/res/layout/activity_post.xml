@@ -78,7 +78,7 @@
         tools:layout_editor_absoluteY="165dp" />
 
 
-    <ImageButton
+    <ImageView
         android:id="@+id/addImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -87,7 +87,6 @@
         android:background="?attr/colorButtonNormal"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:scaleType="centerInside"
         android:src="@drawable/ic_photo_camera_black_24dp"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="431dp" />

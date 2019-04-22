@@ -72,6 +72,7 @@
         android:layout_marginRight="8dp"
         android:background="#74D6D9E8"
         android:dividerHeight="10dp"
+        android:theme="@style/CustomRatingBar"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

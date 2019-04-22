@@ -48,8 +48,6 @@ public class AuthActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() != null) {
                     startActivity(new Intent(AuthActivity.this,StartActivity.class));
-
-
                 }
 
             }
@@ -72,7 +70,6 @@ public class AuthActivity extends AppCompatActivity {
                 })
         .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
         .build();
-
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,12 +116,6 @@ public class AuthActivity extends AppCompatActivity {
 
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
-        if (acct.getEmail() == "jzhan76@gmail.com"){
-            BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation_bar);
-            bottomNavigationView.getMenu().findItem(R.id.nav_report).setVisible(true);
-            Intent intent2 = new Intent (AuthActivity.this, DisplayActivity.class);
-            startActivity(intent2);
-        }
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)

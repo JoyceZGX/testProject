@@ -1,12 +1,17 @@
 package com.example.testproject;
 
-public class MyDataSetGet {
+public class MyCommentSetGet {
 
     private String comment;
     private String dishName;
 
-    public MyDataSetGet(){
+    public MyCommentSetGet(){
 
+    }
+
+    public MyCommentSetGet(String comment, String dishName){
+        this.comment = comment;
+        this.dishName = dishName;
     }
 
     public String getComment (){

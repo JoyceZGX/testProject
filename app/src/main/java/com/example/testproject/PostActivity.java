@@ -3,6 +3,7 @@ package com.example.testproject;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,21 +11,26 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 public class PostActivity extends AppCompatActivity {
 
-    private ImageButton addPhoto;
+    private ImageView addPhoto;
     RatingBar mRatingBar; //rating
     EditText addComment; //added comment
     TextView post; // button pressed to post
@@ -42,7 +48,7 @@ public class PostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
-        addPhoto = (ImageButton) findViewById(R.id.addImage);
+        addPhoto = (ImageView) findViewById(R.id.addImage);
         mRatingBar = findViewById(R.id.ratingBar);
         dish = findViewById(R.id.dish_name);
         post = findViewById(R.id.post);
@@ -89,7 +95,7 @@ public class PostActivity extends AppCompatActivity {
 
         if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK) {
             imageUri = data.getData();
-            addPhoto.setImageURI(imageUri);
+            Picasso.get().load(imageUri).rotate(90).into(addPhoto);
         }
     }
 
@@ -103,25 +109,44 @@ public class PostActivity extends AppCompatActivity {
 
         if (!TextUtils.isEmpty(comment_val)&& imageUri!=null) {
 
-            StorageReference filepath = mStorage.child("Post_Image").child(imageUri.getLastPathSegment());
+            final StorageReference filepath = mStorage.child("Post_Image").child(imageUri.getLastPathSegment());
 
-            filepath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            filepath.putFile(imageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>()
+            {
                 @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Uri downloadUri = taskSnapshot.getUploadSessionUri();
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception
+                {
+                    if (!task.isSuccessful())
+                    {
+                        throw task.getException();
+                    }
+                    return filepath.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>()
+            {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task)
+                {
+                    if (task.isSuccessful())
+                    {
+                        Uri downloadUri = task.getResult();
+                        //Uri downloadUri = taskSnapshot.getDownloadUrl();
 
-                    DatabaseReference newPost = mDatabase.push();
-                    newPost.child("comment").setValue(comment_val);
-                    newPost.child("rating").setValue(mRatingBar.getRating());
-                    newPost.child("image").setValue(downloadUri.toString());
-                    newPost.child("dishName").setValue(dish.getText());
+                        DatabaseReference newPost = mDatabase.push();
+                        newPost.child("comment").setValue(comment_val);
+                        int numStars = (int) mRatingBar.getRating();
+                        newPost.child("rating").setValue(numStars);
+                        newPost.child("image").setValue(downloadUri.toString());
+                        newPost.child("dishName").setValue(dish.getText());
 
-                    mProgress.dismiss();
-                    finish();
+                        mProgress.dismiss();
+                        finish();
 
+                    }
                 }
             });
         }
+
         else if (!TextUtils.isEmpty(comment_val)&& imageUri==null){
 
             DatabaseReference newPost = mDatabase.push();
@@ -132,25 +157,40 @@ public class PostActivity extends AppCompatActivity {
             finish();
         }
         else if (TextUtils.isEmpty(comment_val)&& imageUri!=null){
+            final StorageReference filepath = mStorage.child("Post_Image").child(imageUri.getLastPathSegment());
 
-            StorageReference filepath = mStorage.child("Post_Image").child(imageUri.getLastPathSegment());
-
-            filepath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            filepath.putFile(imageUri).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>()
+            {
                 @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Uri downloadUri = taskSnapshot.getUploadSessionUri();
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception
+                {
+                    if (!task.isSuccessful())
+                    {
+                        throw task.getException();
+                    }
+                    return filepath.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>()
+            {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task)
+                {
+                    if (task.isSuccessful())
+                    {
+                        Uri downloadUri = task.getResult();
+                        //Uri downloadUri = taskSnapshot.getDownloadUrl();
 
-                    DatabaseReference newPost = mDatabase.push();
-                    newPost.child("rating").setValue(mRatingBar.getRating());
-                    newPost.child("image").setValue(downloadUri.toString());
-                    newPost.child("dishName").setValue(dish.getText());
+                        DatabaseReference newPost = mDatabase.push();
+                        newPost.child("rating").setValue(mRatingBar.getRating());
+                        newPost.child("image").setValue(downloadUri.toString());
+                        newPost.child("dishName").setValue(dish.getText());
 
-                    mProgress.dismiss();
-                    finish();
+                        mProgress.dismiss();
+                        finish();
 
+                    }
                 }
             });
-
         }
 
 

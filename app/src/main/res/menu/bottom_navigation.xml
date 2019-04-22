@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+
     <item
-        android:id="@+id/nav_report"
+        android:id="@+id/hello"
         android:title="Report"
         android:visible="false"/>
 
     <item
         android:id="@+id/nav_home"
         android:icon="@drawable/ic_home_black_24dp"
+        android:checked="false"
         android:title="Home" />
 
     <item
@@ -20,6 +22,12 @@
         android:id="@+id/nav_account"
         android:icon="@drawable/ic_person_black_24dp"
         android:title="Account" />
+
+    <item
+        android:id="@+id/nav_report"
+        android:icon="@drawable/ic_insert_chart_black_24dp"
+        android:title="Report"
+        android:visible="false"/>
 
 
 

@@ -14,6 +14,7 @@ import com.google.api.client.util.ExponentialBackOff;
 
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.*;
+import com.google.firebase.auth.FirebaseAuth;
 
 import android.Manifest;
 import android.accounts.AccountManager;
@@ -58,6 +59,7 @@ public class DisplayActivity extends Activity
     ProgressDialog mProgress;
     private ListView menuView;
     private Spinner spinner;
+    private FirebaseAuth mAuth;
 
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
@@ -103,6 +105,10 @@ public class DisplayActivity extends Activity
                 .setBackOff(new ExponentialBackOff());
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation_bar);
+        mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser().getEmail().equals("report.tristy@gmail.com")){
+            bottomNavigationView.getMenu().findItem(R.id.nav_report).setVisible(true);
+        }
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
