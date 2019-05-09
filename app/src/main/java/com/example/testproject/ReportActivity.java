@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -33,14 +34,32 @@ public class ReportActivity extends AppCompatActivity {
 
     DatabaseReference mdatabaseReferece;
     ArrayList<String> list;
+    private TextView text;
+    private TextView text1;
+    private TextView text2;
+    private TextView text3;
+    private TextView text4;
+    private TextView text5;
+    private TextView text6;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report);
 
+        text = findViewById(R.id.top1_txt);
+        text1 =findViewById(R.id.top2_txt);
+        text2 = findViewById(R.id.top3_txt);
+        text3 =findViewById(R.id.low1_txt);
+        text4 = findViewById(R.id.low2_txt);
+        text5 =findViewById(R.id.low3_title);
+
+
         /**
-         * Retrieve data from firebase
+         * Retrieve data from Firebase
          */
         mdatabaseReferece = FirebaseDatabase.getInstance().getReference("Post");
         list = new ArrayList<>();
@@ -53,7 +72,7 @@ public class ReportActivity extends AppCompatActivity {
                     reportList.put(dataSnapshot1.child("dishName").getValue().toString(),
                             Float.parseFloat(dataSnapshot1.child("rating").getValue().toString()));
                     if (reportList.containsKey(dataSnapshot1.child("dishName").getValue().toString())){
-                        //index++;
+                        text.setText(dataSnapshot1.child("dishName").getValue().toString());
                     }
                 }
             }
