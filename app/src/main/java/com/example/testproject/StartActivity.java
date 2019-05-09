@@ -11,6 +11,13 @@ import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * StartActivity that shows open hours and direct user to each menu
+ *
+ * @author Genxing Zhan
+ * @version 1.0
+ */
+
 public class StartActivity extends AppCompatActivity {
 
     private Button matherB;
@@ -25,6 +32,9 @@ public class StartActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        /**
+         * Navigation Bar set up
+         */
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation_bar);
         if (mAuth.getCurrentUser().getEmail().equals("report.tristy@gmail.com")){
             bottomNavigationView.getMenu().findItem(R.id.nav_report).setVisible(true);

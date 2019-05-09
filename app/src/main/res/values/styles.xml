@@ -10,8 +10,8 @@
 
 
     <style name="CustomRatingBar">CustomRatingBar
-        <item name="colorControlNormal">#80CBC4</item>
-        <item name="colorControlActivated">#009688</item>
+        <item name="colorControlNormal">#e0e0e0</item>
+        <item name="colorControlActivated">#ffff00</item>
     </style>
 
 </resources>

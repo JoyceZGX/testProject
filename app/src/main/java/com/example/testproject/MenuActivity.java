@@ -44,15 +44,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
+
+/**
+ * MenuActivity that retrieves data from Google Sheet API
+ *
+ * @author Genxing Zhan
+ * @version 1.0
+ */
 
 public class MenuActivity extends Activity
         implements EasyPermissions.PermissionCallbacks, AdapterView.OnItemSelectedListener {
     GoogleAccountCredential mCredential;
     private TextView mOutputText;
-    private Button mCallApiButton;
     ProgressDialog mProgress;
     private ListView menuView;
     private Spinner spinner;
@@ -64,7 +71,6 @@ public class MenuActivity extends Activity
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
     static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
 
-    private static final String BUTTON_TEXT = "Call Google Sheets API";
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = { SheetsScopes.SPREADSHEETS_READONLY };
 
@@ -75,7 +81,7 @@ public class MenuActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display);
+        setContentView(R.layout.activity_menu);
 
         menuView = (ListView) findViewById(R.id.menu_list);
 
@@ -86,6 +92,9 @@ public class MenuActivity extends Activity
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
 
+        /**
+         * Method to jump to the day of the menu when opening the app
+         */
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
 
@@ -143,7 +152,7 @@ public class MenuActivity extends Activity
                     case R.id.nav_menu:
                         break;
                     case R.id.nav_report:
-                        Intent intent2 = new Intent (MenuActivity.this, MenuActivity.class);
+                        Intent intent2 = new Intent (MenuActivity.this, ReportActivity.class);
                         startActivity(intent2);
                         break;
                 }
@@ -152,7 +161,12 @@ public class MenuActivity extends Activity
         });
     }
 
-
+    /**
+     * Title: Android Quickstart
+     * Date: 2017
+     * Version: 1.0
+     * Availability: https://developers.google.com/sheets/quickstart/android?hl=es-419
+     */
 
     /**
      * Attempt to call the API, after verifying that all the preconditions are
@@ -171,6 +185,7 @@ public class MenuActivity extends Activity
         } else {
             new MakeRequestTask(mCredential).execute();
         }
+        new MakeRequestTask(mCredential).execute();
     }
 
     /**
@@ -219,8 +234,7 @@ public class MenuActivity extends Activity
      *     activity result.
      */
     @Override
-    protected void onActivityResult(
-            int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
             case REQUEST_GOOGLE_PLAY_SERVICES:
@@ -254,6 +268,8 @@ public class MenuActivity extends Activity
                 }
                 break;
         }
+        getResultsFromApi();
+
     }
 
     /**
@@ -356,7 +372,6 @@ public class MenuActivity extends Activity
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         int index = spinner.getSelectedItemPosition();
         getResultsFromApi();
-
     }
 
     @Override
@@ -404,7 +419,7 @@ public class MenuActivity extends Activity
          */
         private List<String> getDataFromApi() throws IOException {
             String spreadsheetId = "1Zx3EUHonLy6P9xTD0sqzaPUtpCfr371kCaug-6tZxAM";
-            String range = "Class Data!A2:G";
+            String range = "Class Data!A2:H";
             List<String> results = new ArrayList<String>();
             ValueRange response = this.mService.spreadsheets().values()
                     .get(spreadsheetId, range)
@@ -414,7 +429,6 @@ public class MenuActivity extends Activity
 
                 for (List row : values) {
                     results.add(row.get(spinner.getSelectedItemPosition()) + "  " );
-                    //results.add(row.get(4)+"");
                 }
             }
             return results;
@@ -434,7 +448,6 @@ public class MenuActivity extends Activity
             if (output == null || output.size() == 0) {
                 mOutputText.setText("No results returned.");
             } else {
-                //output.add(0, "Data retrieved using the Google Sheets API:");
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(MenuActivity.this,android.R.layout.simple_list_item_1,output);
                 menuView.setAdapter(adapter);
                 menuView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

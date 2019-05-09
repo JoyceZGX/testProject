@@ -26,6 +26,14 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+/**
+ * DishActivity class that displays the dishname, comments, photos and average rating of each dish
+ *
+ * @author Genxing Zhan
+ * @Date 4/20/2019
+ * @version 1.0
+ */
+
 public class DishActivity extends AppCompatActivity {
 
     TextView dishName;
@@ -38,8 +46,6 @@ public class DishActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     LinearLayout gallery;
     ArrayList<String> favouriteList;
-    //ImageView dishImage;
-    //int numStars ;
     int index = 0;
     float numStars;
 
@@ -63,19 +69,22 @@ public class DishActivity extends AppCompatActivity {
         final String newDish = n1.getStringExtra("DishName");
         dishName.setText(newDish);
 
-        /*
-        Add dish to the favourite list
+        /**
+         *Add dish to the favourite list
          */
         favourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = getIntent();
-                favouriteList.add(newDish);
-                intent.putExtra("favList", favouriteList);
+                Intent in1 = new Intent(DishActivity.this, AccountActivity.class);
+                in1.putExtra("fav",newDish);
+                startActivity(in1);
             }
         });
 
-        //connect to firebase
+
+        /**
+         * Retrieve data from Firebase
+         */
         mdatabaseReferece = FirebaseDatabase.getInstance().getReference("Post");
         list = new ArrayList<>();
         mdatabaseReferece.addValueEventListener(new ValueEventListener() {
@@ -97,11 +106,10 @@ public class DishActivity extends AppCompatActivity {
                             mRatingBar.setRating(numStars);
                         }
                     }
-                    if (dataSnapshot1.hasChild("image")){
+                    if (dataSnapshot1.hasChild("image")) {
                         if (dataSnapshot1.child("dishName").getValue().toString().equals(newDish)) {
                             LayoutInflater inflater = LayoutInflater.from(DishActivity.this);
-                            final View view = inflater.inflate(R.layout.gallery_list,gallery,false);
-                            //ImageView imageView = findViewById(R.id.gallery_photo);
+                            final View view = inflater.inflate(R.layout.gallery_list, gallery, false);
                             ImageView imageView = view.findViewById(R.id.gallery_photo);
                             String imageUri = dataSnapshot1.child("image").getValue().toString();
                             Picasso.get().load(imageUri).rotate(90).into(imageView);
@@ -120,8 +128,8 @@ public class DishActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        Go to the post page when post clicked
+        /**
+         *Go to the post page when post clicked
          */
         posting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,11 +140,12 @@ public class DishActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        Navigation Bar set up
+        /**
+         *Navigation Bar set up
          */
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation_bar);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        //recognize chartwells default email address
         if (mAuth.getCurrentUser().getEmail().equals("report.tristy@gmail.com")){
             bottomNavigationView.getMenu().findItem(R.id.nav_report).setVisible(true);
         }
@@ -149,7 +158,7 @@ public class DishActivity extends AppCompatActivity {
                         startActivity(intent1);
                         break;
                     case R.id.nav_account:
-                        Intent intent0 = new Intent (DishActivity.this, MenuActivity.class);
+                        Intent intent0 = new Intent (DishActivity.this, AccountActivity.class);
                         startActivity(intent0);
                         break;
                     case R.id.nav_menu:
@@ -157,7 +166,7 @@ public class DishActivity extends AppCompatActivity {
                         startActivity(intent3);
                         break;
                     case R.id.nav_report:
-                        Intent intent2 = new Intent (DishActivity.this, MenuActivity.class);
+                        Intent intent2 = new Intent (DishActivity.this, ReportActivity.class);
                         startActivity(intent2);
                         break;
 

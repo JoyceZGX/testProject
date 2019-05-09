@@ -25,6 +25,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+/**
+ * AuthActivity that allows user to sign in with Firebase default Gmail API
+ *
+ * @author Genxing Zhan
+ * @version 1.0
+ */
+
 public class AuthActivity extends AppCompatActivity {
 
     private SignInButton button1;
@@ -34,7 +41,6 @@ public class AuthActivity extends AppCompatActivity {
     private static final String TAG = "AuthActivity";
 
     private FirebaseAuth.AuthStateListener mAuthListener;
-
 
 
     @Override
@@ -54,6 +60,12 @@ public class AuthActivity extends AppCompatActivity {
         };
 
         button1 = (SignInButton) findViewById(R.id.signIn);
+
+        /*
+         * Title: Authenticate Using Google Sign-In on Android
+         * Date: 2018
+         * Availability: https://firebase.google.com/docs/auth/android/google-signin
+         */
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -112,10 +124,7 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        //BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation_bar);
-
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -132,9 +141,11 @@ public class AuthActivity extends AppCompatActivity {
                             Toast.makeText(AuthActivity.this, "Authentication Failed",
                                     Toast.LENGTH_SHORT).show();
                         }
-
-                        // ...
                     }
                 });
     }
+
+
+
+
 }

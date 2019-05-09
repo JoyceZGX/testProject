@@ -28,6 +28,14 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+/**
+ * PostActivity that allows users to post rating, comment, and photos.
+ * and save these data into FireBase
+ *
+ * @author Genxing Zhan
+ * @version 1.0
+ */
+
 public class PostActivity extends AppCompatActivity {
 
     private ImageView addPhoto;
@@ -39,7 +47,6 @@ public class PostActivity extends AppCompatActivity {
     private StorageReference mStorage;
     private DatabaseReference mDatabase;
     private ProgressDialog mProgress;
-
 
     private static final int GALLERY_REQUEST = 1;
 
@@ -75,7 +82,6 @@ public class PostActivity extends AppCompatActivity {
         mRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                //record the rating to firebase
             }
         });
 
@@ -99,7 +105,9 @@ public class PostActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * upload() method when got clicked, save all existing data into firebase
+     */
     private void upload(){
 
         mProgress.setMessage("Posting...");
@@ -127,10 +135,8 @@ public class PostActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Uri> task)
                 {
-                    if (task.isSuccessful())
-                    {
+                    if (task.isSuccessful()){
                         Uri downloadUri = task.getResult();
-                        //Uri downloadUri = taskSnapshot.getDownloadUrl();
 
                         DatabaseReference newPost = mDatabase.push();
                         newPost.child("comment").setValue(comment_val);
@@ -141,7 +147,6 @@ public class PostActivity extends AppCompatActivity {
 
                         mProgress.dismiss();
                         finish();
-
                     }
                 }
             });
@@ -178,7 +183,6 @@ public class PostActivity extends AppCompatActivity {
                     if (task.isSuccessful())
                     {
                         Uri downloadUri = task.getResult();
-                        //Uri downloadUri = taskSnapshot.getDownloadUrl();
 
                         DatabaseReference newPost = mDatabase.push();
                         newPost.child("rating").setValue(mRatingBar.getRating());
@@ -187,6 +191,7 @@ public class PostActivity extends AppCompatActivity {
 
                         mProgress.dismiss();
                         finish();
+                        startActivity(new Intent(PostActivity.this,DishActivity.class));
 
                     }
                 }
